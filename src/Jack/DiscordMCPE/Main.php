@@ -131,24 +131,24 @@ class Main extends PluginBase implements Listener{
                   break;
               }
 $embed = [];
-$embed[] = {
-    color: 3447003,
-    author: {
-      name: "Minecraft Server",
-    },
-    title: "User reported !",
-    description: "A user in-game has been reported below are the details gathered.",
-    fields: [{
-        name: "Name",
-        value: $args[1]
-      },
-      {
-        name: "Reason",
-        value: str_replace([$args[0], $args[1]],$args)
-      }
+$embed[] = [
+    "color" => 3447003,
+    "author" => [
+      "name" => "Minecraft Server"
     ],
-    timestamp: new Date()
-  };
+    "title" => "User reported !",
+    "description" => "A user in-game has been reported below are the details gathered.",
+    "fields" => [
+      [
+        "name" => "Name:",
+        "value" => $args[1]
+      ],
+      [
+        "name" => "Reason:",
+        "value" => str_replace([$args[0], $args[1]],$args)
+      ]
+    ]
+  ];
               $this->sendMessage("nolog", "",$embed);
               foreach ($this->getServer()->getOnlinePlayers() as $player) {
             if($player->isOp()){
