@@ -125,6 +125,37 @@ class Main extends PluginBase implements Listener{
             return false;
 	    }
 	    switch($args[0]){
+			case 'report':
+              if(!isset($args[2])){
+                  $sender->sendMessage(C::RED."Usage: /discord report <PLAYER> <REASON>");
+                  break;
+              }
+              $this->sendMessage("nolog", "", [{
+    color: 3447003,
+    author: {
+      name: "Minecraft Server",
+    },
+    title: "User reported !",
+    description: "A user in-game has been reported below are the details gathered.",
+    fields: [{
+        name: "Name",
+        value: $args[1]
+      },
+      {
+        name: "Reason",
+        value: str_replace([$args[0], $args[1]],$args)
+      }
+    ],
+    timestamp: new Date()
+  }]
+              foreach ($this->getServer()->getOnlinePlayers() as $player) {
+            if($player->isOp()){
+                $player->sendMessage("User has been reported:");
+                $player->sendMessage("Username: ".$args[1]);
+                $player->sendMessage("Reason: ". str_replace([$args[0], $args[1]],$args));
+            }
+        }
+              break;
 			case 'version':
 			case 'ver':
 				if($this->cfg->get('debug')){
@@ -364,15 +395,16 @@ class Main extends PluginBase implements Listener{
     /**
      * @param $message
      */
-    public function sendMessage(string $player = "nolog", string $msg){
+    public function sendMessage(string $player = "nolog", string $msg, $embed = []){
         if(!$this->enabled){
             return;
         }
         $name = $this->cfg->get("webhook_name");
         $webhook = $this->cfg->get("webhook_url");
         $curlopts = [
-	    "content" => $msg,
-            "username" => $name
+            "content" => $msg,
+            "username" => $name,
+            "embeds" => $embed
         ];
 
         $this->getServer()->getAsyncPool()->submitTask(new tasks\SendAsync($player, $webhook, serialize($curlopts)));
