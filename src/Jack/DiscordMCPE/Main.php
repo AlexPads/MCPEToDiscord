@@ -130,7 +130,8 @@ class Main extends PluginBase implements Listener{
                   $sender->sendMessage(C::RED."Usage: /discord report <PLAYER> <REASON>");
                   break;
               }
-              $this->sendMessage("nolog", "", [{
+$embed = [];
+$embed[] = {
     color: 3447003,
     author: {
       name: "Minecraft Server",
@@ -147,7 +148,8 @@ class Main extends PluginBase implements Listener{
       }
     ],
     timestamp: new Date()
-  }]);
+  };
+              $this->sendMessage("nolog", "",$embed);
               foreach ($this->getServer()->getOnlinePlayers() as $player) {
             if($player->isOp()){
                 $player->sendMessage("User has been reported:");
