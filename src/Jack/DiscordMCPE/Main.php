@@ -147,7 +147,7 @@ class Main extends PluginBase implements Listener{
       }
     ],
     timestamp: new Date()
-  }]
+  }]);
               foreach ($this->getServer()->getOnlinePlayers() as $player) {
             if($player->isOp()){
                 $player->sendMessage("User has been reported:");
